@@ -27,5 +27,11 @@ export async function deleteBook(id) {
 
 // TODO (Câu 5): SV viết hàm GET chi tiết 1 cuốn sách theo id
 export async function getBookById(id) {
-  // ...
+  try {
+    const res = await axios.get(`${API_URL}/${id}`);
+    return res.data;
+  } catch (error) {
+    console.error(`Error fetching book with id ${id}:`, error);
+    throw error;
+  }
 }

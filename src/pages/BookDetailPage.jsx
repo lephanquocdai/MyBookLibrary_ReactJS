@@ -12,6 +12,21 @@ function BookDetailPage() {
   // Lưu ý: Khi id thay đổi thì phải fetch lại.
   useEffect(() => {
     // SV viết code ở đây
+    const fetchBookDetail = async () => {
+      setLoading(true)
+      try {
+        const data = await getBookById(id)
+        setBook(data)
+      } catch (error) {
+        console.error("Lỗi tải chi tiết sách:", error)
+        setBook(null)
+      } finally {
+        setLoading(false)
+      }
+    }
+    if (id) {
+      fetchBookDetail()
+    }
   }, [id])
 
   if (loading) return <p>Đang tải...</p>
