@@ -8,9 +8,9 @@ import { useState, useEffect } from 'react'
 //   - Trả về [value, setValue] giống useState
 export function useLocalStorage(key, initialValue) {
   // SV viết code ở đây
-  const [value, setValue] = useState(() => {
+  const [storedValue, setStoredValue] = useState(() => {
     try {
-      const item = localStorage.getItem(key)
+      const item = window.localStorage.getItem(key)
       return item ? JSON.parse(item) : initialValue
     } catch (error) {
       console.error(error)
@@ -18,13 +18,15 @@ export function useLocalStorage(key, initialValue) {
     }
   })
 
-  useEffect(() => {
+  const setValue = (value) => {
     try {
-      localStorage.setItem(key, JSON.stringify(value))
+      const valueToStore = value instanceof Function ? value(storedValue) : value
+      setStoredValue(valueToStore)
+      window.localStorage.setItem(key, JSON.stringify(valueToStore))
     } catch (error) {
       console.error(error)
     }
-  }, [key, value])
+  }
 
-  return [value, setValue]
+  return [storedValue, setValue]
 }

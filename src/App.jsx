@@ -1,4 +1,8 @@
-import { Routes, Route, NavLink, Navigate } from 'react-router-dom'
+import { useEffect } from 'react'
+import { Routes, Route, NavLink, Navigate, useNavigate } from 'react-router-dom'
+import { useRecoilState } from 'recoil'
+import { userState } from './store/atoms'
+import { useLocalStorage } from './hooks/useLocalStorage'
 import HomePage from './pages/HomePage.jsx'
 import BookListPage from './pages/BookListPage.jsx'
 import BookDetailPage from './pages/BookDetailPage.jsx'
@@ -7,6 +11,22 @@ import LoginPage from './pages/LoginPage.jsx'
 
 function App() {
   // TODO (Câu 9): Lấy thông tin user từ Recoil để hiển thị tên + nút Logout
+  const [user, setUser] = useRecoilState(userState)
+  const [savedUser, setSavedUser] = useLocalStorage('user', null)
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    if (savedUser && !user) {
+      setUser(savedUser)
+    }
+  }, [savedUser, user, setUser])
+
+  const handleLogout = () => {
+    setUser(null)
+    setSavedUser(null)
+    navigate('/login')
+  }
+
   // TODO (Câu 10): Làm ProtectedRoute cho các trang cần đăng nhập
 
   return (
@@ -17,8 +37,14 @@ function App() {
           <NavLink to="/" end>Trang chủ</NavLink>
           <NavLink to="/books">Danh sách sách</NavLink>
           <NavLink to="/add">Thêm sách</NavLink>
-          <NavLink to="/login">Đăng nhập</NavLink>
-          {/* TODO: Hiển thị "Xin chào, {username}" và nút Logout khi đã login */}
+          {!user ? (
+            <NavLink to="/login">Đăng nhập</NavLink>
+          ) : (
+            <>
+              <span style={{ color: 'white', marginRight: 15, fontWeight: 'bold' }}>Xin chào, {user.username}</span>
+              <button onClick={handleLogout} className="btn btn-danger" style={{ padding: '6px 12px' }}>Logout</button>
+            </>
+          )}
         </div>
       </nav>
 
