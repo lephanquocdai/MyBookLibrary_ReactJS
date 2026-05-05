@@ -17,7 +17,13 @@ export async function getBooks() {
 
 // TODO (Câu 7): SV viết hàm POST thêm sách mới
 export async function addBook(book) {
-  // ...
+  try {
+    const res = await axios.post(API_URL, book);
+    return res.data;
+  } catch (error) {
+    console.error("Error adding book:", error);
+    throw error;
+  }
 }
 
 // TODO (Câu 8): SV viết hàm DELETE sách theo id
