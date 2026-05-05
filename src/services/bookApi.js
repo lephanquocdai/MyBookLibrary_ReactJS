@@ -6,7 +6,13 @@ export const API_URL = 'https://67ec9394aa794fb3222e224b.mockapi.io/books'
 
 // TODO (Câu 2): SV viết hàm fetch danh sách sách bằng axios
 export async function getBooks() {
-  // return axios.get(API_URL).then(res => res.data)
+  try {
+    const res = await axios.get(API_URL);
+    return res.data;
+  } catch (error) {
+    console.error("Error fetching books:", error);
+    throw error;
+  }
 }
 
 // TODO (Câu 7): SV viết hàm POST thêm sách mới

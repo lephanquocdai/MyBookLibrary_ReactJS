@@ -17,6 +17,18 @@ function BookListPage() {
   // khi component mount. Nhớ bật/tắt loading cho đúng.
   useEffect(() => {
     // SV viết code ở đây
+    const fetchBooks = async () => {
+      setLoading(true)
+      try {
+        const data = await getBooks()
+        setBooks(data)
+      } catch (error) {
+        console.error("Lỗi khi tải sách:", error)
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchBooks()
   }, [])
 
   // TODO (Câu 6): SV lọc sách dựa trên `filter` (trạng thái) và `keyword` (tên sách)
