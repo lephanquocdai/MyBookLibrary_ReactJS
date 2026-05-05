@@ -28,6 +28,13 @@ function App() {
   }
 
   // TODO (Câu 10): Làm ProtectedRoute cho các trang cần đăng nhập
+  const ProtectedRoute = ({ children }) => {
+    // Nếu cả recoil state và localStorage đều không có user thì chặn lại
+    if (!user && !savedUser) {
+      return <Navigate to="/login" replace />
+    }
+    return children
+  }
 
   return (
     <>
@@ -52,8 +59,16 @@ function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/books" element={<BookListPage />} />
-          <Route path="/books/:id" element={<BookDetailPage />} />
-          <Route path="/add" element={<AddBookPage />} />
+          <Route path="/books/:id" element={
+            <ProtectedRoute>
+              <BookDetailPage />
+            </ProtectedRoute>
+          } />
+          <Route path="/add" element={
+            <ProtectedRoute>
+              <AddBookPage />
+            </ProtectedRoute>
+          } />
           <Route path="/login" element={<LoginPage />} />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
