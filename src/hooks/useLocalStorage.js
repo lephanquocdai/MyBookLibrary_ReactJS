@@ -8,4 +8,23 @@ import { useState, useEffect } from 'react'
 //   - Trả về [value, setValue] giống useState
 export function useLocalStorage(key, initialValue) {
   // SV viết code ở đây
+  const [value, setValue] = useState(() => {
+    try {
+      const item = localStorage.getItem(key)
+      return item ? JSON.parse(item) : initialValue
+    } catch (error) {
+      console.error(error)
+      return initialValue
+    }
+  })
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(key, JSON.stringify(value))
+    } catch (error) {
+      console.error(error)
+    }
+  }, [key, value])
+
+  return [value, setValue]
 }
