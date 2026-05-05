@@ -28,7 +28,13 @@ export async function addBook(book) {
 
 // TODO (Câu 8): SV viết hàm DELETE sách theo id
 export async function deleteBook(id) {
-  // ...
+  try {
+    const res = await axios.delete(`${API_URL}/${id}`);
+    return res.data;
+  } catch (error) {
+    console.error(`Error deleting book with id ${id}:`, error);
+    throw error;
+  }
 }
 
 // TODO (Câu 5): SV viết hàm GET chi tiết 1 cuốn sách theo id

@@ -46,6 +46,15 @@ function BookListPage() {
   //   - Nên có confirm trước khi xóa
   const handleDelete = async (id) => {
     // SV viết code ở đây
+    if (window.confirm('Bạn có chắc chắn muốn xóa sách này không?')) {
+      try {
+        await deleteBook(id)
+        setBooks((prevBooks) => prevBooks.filter((book) => book.id !== id))
+      } catch (error) {
+        console.error("Lỗi khi xóa sách:", error)
+        alert("Đã xảy ra lỗi khi xóa sách.")
+      }
+    }
   }
 
   return (
