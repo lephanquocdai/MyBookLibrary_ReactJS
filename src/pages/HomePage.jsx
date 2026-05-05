@@ -7,9 +7,16 @@ function HomePage() {
 
   // TODO (Câu 6): SV dùng useMemo để tính số lượng sách theo từng trạng thái
   // stats = { total, read, reading, unread }
+  // Giải thích: Dùng useMemo ở đây để tránh việc phải duyệt mảng books và tính toán lại thống kê một cách không cần thiết mỗi khi component bị re-render bởi các lý do khác. Việc tính toán chỉ thực hiện lại khi mảng books thực sự thay đổi, giúp tối ưu hiệu suất.
   const stats = useMemo(() => {
     // SV tính toán ở đây
-    return { total: 0, read: 0, reading: 0, unread: 0 }
+    const result = { total: books.length, read: 0, reading: 0, unread: 0 };
+    books.forEach(book => {
+      if (book.status === 'read') result.read++;
+      else if (book.status === 'reading') result.reading++;
+      else if (book.status === 'unread') result.unread++;
+    });
+    return result;
   }, [books])
 
   return (

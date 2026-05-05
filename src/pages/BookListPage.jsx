@@ -34,7 +34,11 @@ function BookListPage() {
   // TODO (Câu 6): SV lọc sách dựa trên `filter` (trạng thái) và `keyword` (tên sách)
   // Gợi ý: filter === 'all' thì giữ nguyên; ngược lại so sánh book.status === filter
   //        keyword: so sánh (không phân biệt hoa thường) với book.title
-  const displayedBooks = books // SV thay thế bằng kết quả sau khi filter + search
+  const displayedBooks = books.filter(book => {
+    const matchFilter = filter === 'all' || book.status === filter;
+    const matchKeyword = book.title.toLowerCase().includes(keyword.toLowerCase());
+    return matchFilter && matchKeyword;
+  });
 
   // TODO (Câu 8): SV viết hàm xử lý xóa sách:
   //   - Gọi API deleteBook(id)
